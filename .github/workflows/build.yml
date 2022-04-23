@@ -27,13 +27,13 @@ jobs:
         run: |
           apt-get update
           DEBIAN_FRONTEND=noninteractive apt-get install -y mingw-w64 zip upx
-          nimble build_linux_i386
+          # nimble build_linux_i386
           nimble build_linux_amd64
           nimble build_windows_i386
           nimble build_windows_amd64
       - name: Zip Artifacts
         run: |
-          zip -j eget-linux-i386.zip bin/i386/linux/*
+          # zip -j eget-linux-i386.zip bin/i386/linux/*
           zip -j eget-linux-amd64.zip bin/amd64/linux/*
           zip -j eget-windows-i386.zip bin/i386/windows/*
           zip -j eget-windows-amd64.zip bin/amd64/windows/*
