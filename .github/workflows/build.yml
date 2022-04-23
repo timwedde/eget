@@ -1,0 +1,63 @@
+name: Build
+
+on: [push]
+
+jobs:
+  upload-release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [build-linux-windows, build-macos]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: eget
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: '*.zip'
+
+  build-linux-windows:
+    runs-on: ubuntu-latest
+    container: nimlang/nim
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Project
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y mingw-w64 zip upx
+          nimble build_linux_i386
+          nimble build_linux_amd64
+          nimble build_windows_i386
+          nimble build_windows_amd64
+      - name: Zip Artifacts
+        run: |
+          zip -j eget-linux-i386.zip bin/i386/linux/*
+          zip -j eget-linux-amd64.zip bin/amd64/linux/*
+          zip -j eget-windows-i386.zip bin/i386/windows/*
+          zip -j eget-windows-amd64.zip bin/amd64/windows/*
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: eget
+          path: '*.zip'
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Nim
+        run: |
+          brew install nim upx
+      - name: Build Project
+        run: |
+          nimble build_macos_amd64
+      - name: Zip Artifacts
+        run: |
+          zip -j eget-macos-amd64.zip bin/amd64/macos/*
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@master
+        with:
+          name: eget
+          path: '*.zip'
