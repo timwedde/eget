@@ -32,9 +32,9 @@ jobs:
           nimble build_windows_amd64
       - name: Bundle Artifacts
         run: |
-          tar czf eget-linux-amd64.tar.gz bin/amd64/linux/*
-          tar czf eget-windows-i386.tar.gz bin/i386/windows/*
-          tar czf eget-windows-amd64.tar.gz bin/amd64/windows/*
+          tar czf eget-linux-amd64.tar.gz -C bin/amd64/linux/ .
+          tar czf eget-windows-i386.tar.gz -C bin/i386/windows/ .
+          tar czf eget-windows-amd64.tar.gz -C bin/amd64/windows/ .
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -53,7 +53,7 @@ jobs:
           nimble build_macos_amd64
       - name: Bundle Artifacts
         run: |
-          tar czf eget-macos-amd64.tar.gz bin/amd64/macos/*
+          tar czf eget-macos-amd64.tar.gz -C bin/amd64/macos/ .
       - name: Upload Artifacts
         uses: actions/upload-artifact@master
         with:
