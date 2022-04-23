@@ -2,7 +2,7 @@ import strformat
 
 # Package
 
-version = "1.0.0"
+version = "1.1.0"
 author = "timwedde"
 description = "A tiny helper to access scoped environment variables."
 license = "MIT"
