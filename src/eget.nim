@@ -1,7 +1,3 @@
-# macOS (native): nim -d:danger --opt:size -d:strip c eget.nim
-# Windows (amd64): nim -d:danger --opt:size -d:strip --cpu:amd64 -d:mingw c eget.nim
-# Windows (i386): nim -d:danger --opt:size -d:strip --cpu:i386 -d:mingw c eget.nim
-
 import std/os
 import std/tables
 import std/unicode
