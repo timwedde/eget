@@ -20,21 +20,24 @@ jobs:
 
   build-linux-windows:
     runs-on: ubuntu-latest
-    container: nimlang/nim
     steps:
       - uses: actions/checkout@v3
+      - name: Install Nim and Dependencies
+        run: |
+          sudo apt-get update
+          DEBIAN_FRONTEND=noninteractive sudo apt-get install -y curl xz-utils g++ git mingw-w64 zip upx
+          curl https://nim-lang.org/choosenim/init.sh -sSf | bash -s -- -y
       - name: Build Project
         run: |
-          apt-get update
-          DEBIAN_FRONTEND=noninteractive apt-get install -y mingw-w64 upx
+          export PATH=/home/runner/.nimble/bin:$PATH
           nimble build_linux_amd64
-          nimble build_windows_i386
           nimble build_windows_amd64
+          nimble build_windows_i386
       - name: Bundle Artifacts
         run: |
           tar czf eget-linux-amd64.tar.gz -C bin/amd64/linux/ .
-          tar czf eget-windows-i386.tar.gz -C bin/i386/windows/ .
           tar czf eget-windows-amd64.tar.gz -C bin/amd64/windows/ .
+          tar czf eget-windows-i386.tar.gz -C bin/i386/windows/ .
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -51,9 +54,11 @@ jobs:
       - name: Build Project
         run: |
           nimble build_macos_amd64
+          nimble build_macos_arm64
       - name: Bundle Artifacts
         run: |
           tar czf eget-macos-amd64.tar.gz -C bin/amd64/macos/ .
+          tar czf eget-macos-arm64.tar.gz -C bin/arm64/macos/ .
       - name: Upload Artifacts
         uses: actions/upload-artifact@master
         with:
