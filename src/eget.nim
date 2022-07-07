@@ -116,10 +116,10 @@ proc main() =
         arg_data.add(value.toLower)
 
   let target_env_var = result.join("") % arg_data
-  let target_value = getEnv(target_env_var)
-  if target_value == "":
-    echo &"Target environment variable is empty: {target_env_var}"
+  if not existsEnv(target_env_var):
+    echo &"Target environment variable does not exist: {target_env_var}"
     quit(1)
+  let target_value = getEnv(target_env_var)
   echo target_value
 
 when isMainModule:
