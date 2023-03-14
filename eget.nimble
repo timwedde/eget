@@ -11,7 +11,7 @@ bin = @["eget"]
 
 # Dependencies
 
-requires "nim >= 1.6.6"
+requires "nim >= 1.6.8"
 
 # Tasks
 
